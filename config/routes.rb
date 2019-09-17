@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :api do
+  namespace :api do
     resources :menus do
       resources :items
     end

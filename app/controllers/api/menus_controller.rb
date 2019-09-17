@@ -1,4 +1,5 @@
 class Api::MenusController < ApplicationController
+  before_action :set_menu, only: [:show, :update, :destroy]
 
   def index 
     render json: Menu.all
@@ -18,7 +19,7 @@ class Api::MenusController < ApplicationController
   end
 
   def update 
-    @menu.update()
+    @menu.update(menu_params)
     # REMEMBER to come back and fix update once you get there
     render json: @menu
   end

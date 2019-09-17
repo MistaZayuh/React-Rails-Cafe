@@ -1,26 +1,89 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import axios from "axios";
+import MenuList from "./components/MenuList";
+import MenuForm from "./components/MenuForm";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import { Header, Container, } from "semantic-ui-react";
+
+class App extends React.Component {
+  state = {
+    menus: [],
+    items: [],
+    showEdit: false,
+  }
+  componentDidMount() {
+    axios.get("/api/menus")
+    .then( res => {
+      this.setState({ menus: res.data})
+    })
+    .catch( err => {
+      console.log(err)
+    })
+  };
+
+
+
+  addMenu = (name) => {
+    axios.post("/api/menus", { name })
+    .then(res => {
+      // const { menus } = this.state.menus;
+      this.setState({ menus: [ res.data, ...this.state.menus, ], })
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  };
+
+
+  deleteMenu = (id) => {
+    axios.delete(`/api/menus/${id}`)
+    .then( res => {
+      const { menus, } = this.state.menus;
+      this.setState({ menus: this.state.menus.filter( menu => menu.id !== id ), })
+    })
+    .catch( err => {
+      console.log(err)
+    })
+  };
+
+
+
+  updateMenu = (menudata) => {
+    axios.put(`/api/menus/${menudata.id}`)
+    .then(res => {
+      debugger
+      const menus = this.state.menus.map( menu => {
+        if (menu.id === menudata.id )
+          return res.data;
+        return menu
+      })
+      this.setState({ menus, })
+    })
+    .catch( err => {
+      console.log(err)
+    })
+  };
+
+
+
+  render() {
+    return (
+      <Container>
+        <Header as="h1">
+          Tacocat Cafe
+        </Header>
+        <div>
+          <MenuForm updateMenu={this.updateMenu} addMenu={this.addMenu} />
+          <MenuList
+          menus={this.state.menus} 
+          updateMenu={this.updateMenu}
+          deleteMenu={this.deleteMenu}
+          />
+
+        </div>
+      </Container>
+    );
+  };
+};
 
 export default App;
