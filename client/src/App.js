@@ -48,12 +48,11 @@ class App extends React.Component {
 
 
 
-  updateMenu = (menudata) => {
-    axios.put(`/api/menus/${menudata.id}`)
+  updateMenu = ({name, id}) => {
+    axios.put(`/api/menus/${id}`, {name, id} )
     .then(res => {
-      debugger
       const menus = this.state.menus.map( menu => {
-        if (menu.id === menudata.id )
+        if (menu.id === id )
           return res.data;
         return menu
       })

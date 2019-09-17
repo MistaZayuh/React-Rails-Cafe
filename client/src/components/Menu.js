@@ -19,8 +19,8 @@ addItem = () => {
 };
 
 renderItems = () => {
-  if (this.state.showItems === true) 
-    return   <ItemList menu_id={this.props.menu_id} />
+  if (this.state.showItems === true) {
+    return   <ItemList menu_id={this.props.menu_id} />}
   this.setState({ showItems: !this.state.showItems })
   
 }

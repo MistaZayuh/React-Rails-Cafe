@@ -13,7 +13,7 @@ class MenuForm extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     if (this.props.id) {
-      this.props.updateMenu({ id: this.props.id, name: this.state.name, });
+      this.props.updateMenu({ id: this.props.id, name: this.state.name });
       this.props.toggleEdit()
     } else {
       this.props.addMenu(this.state.name);
